@@ -63,11 +63,11 @@ jobs:
       - name: Restore
         run: dotnet restore
 
-      - name: Build
-        run: dotnet build --configuration Release --no-restore /p:Version=${{ steps.gitversion.outputs.semVer }}
+      - name: Publish
+        run: dotnet publish src/Forklift.csproj --configuration Release /p:Version=${{ steps.gitversion.outputs.semVer }}
 
       - name: Pack
-        run: dotnet pack src/Forklift.csproj --configuration Release --no-build --output ./nupkg
+        run: dotnet pack src/Forklift.csproj --configuration Release --no-build --output ./nupkg /p:Version=${{ steps.gitversion.outputs.semVer }}
 
       - name: Push to GitHub Packages
         run: dotnet nuget push ./nupkg/*.nupkg --source "https://nuget.pkg.github.com/bondarewicz/index.json" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate

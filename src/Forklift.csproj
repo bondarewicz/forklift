@@ -1,4 +1,4 @@
-<Project Sdk="Aspire.AppHost.Sdk/13.1.0">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
@@ -8,6 +8,7 @@
 
     <!-- NuGet Tool Packaging -->
     <IsPackable>true</IsPackable>
+    <IsPublishable>true</IsPublishable>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>forklift</ToolCommandName>
     <PackageId>Forklift</PackageId>
@@ -17,9 +18,11 @@
     <RepositoryUrl>https://github.com/bondarewicz/forklift</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeBuildOutput>true</IncludeBuildOutput>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="*" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="*" />
     <PackageReference Include="Aspire.Hosting.MongoDB" Version="*" />
     <PackageReference Include="Aspire.Hosting.Redis" Version="*" />
