@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.Configuration;
 
 // =============================================================================
@@ -14,14 +15,71 @@ Environment.SetEnvironmentVariable("ASPNETCORE_URLS",
 Environment.SetEnvironmentVariable("ASPIRE_DASHBOARD_OTLP_HTTP_ENDPOINT_URL",
     Environment.GetEnvironmentVariable("ASPIRE_DASHBOARD_OTLP_HTTP_ENDPOINT_URL") ?? "http://localhost:18889");
 
+// Detect and configure DCP paths at runtime for dotnet tool support
+var rid = GetRuntimeIdentifier();
+var nugetCache = GetNuGetCacheDirectory();
+const string aspireVersion = "13.1.0";
+
+var dcpPackagePath = Path.Combine(nugetCache, $"aspire.hosting.orchestration.{rid}", aspireVersion, "tools");
+var dashboardPackagePath = Path.Combine(nugetCache, $"aspire.dashboard.sdk.{rid}", aspireVersion, "tools");
+
+// Check if packages exist, if not instruct user to install
+if (!Directory.Exists(dcpPackagePath) || !Directory.Exists(dashboardPackagePath))
+{
+    Console.Error.WriteLine($"Aspire orchestration packages not found for {rid}.");
+    Console.Error.WriteLine("Please run the following commands to install required packages:");
+    Console.Error.WriteLine($"  dotnet add package Aspire.Hosting.Orchestration.{rid} --version {aspireVersion}");
+    Console.Error.WriteLine($"  dotnet add package Aspire.Dashboard.Sdk.{rid} --version {aspireVersion}");
+    Console.Error.WriteLine("Or install the Aspire workload:");
+    Console.Error.WriteLine("  dotnet workload install aspire");
+    Environment.Exit(1);
+}
+
 // Get the directory where the executable is located (for dotnet tool support)
 var exeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 var appSettingsPath = Path.Combine(exeDir, "appsettings.json");
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+// Configure DCP paths to use user's local NuGet cache
+builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(dcpPackagePath, "dcp");
+builder.Configuration["DcpPublisher:ExtensionsPath"] = Path.Combine(dcpPackagePath, "ext");
+builder.Configuration["DcpPublisher:BinPath"] = Path.Combine(dcpPackagePath, "ext", "bin");
+builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(dashboardPackagePath, "Aspire.Dashboard.dll");
+
 // Load configuration from the tool's installation directory
 builder.Configuration.AddJsonFile(appSettingsPath, optional: false, reloadOnChange: false);
+
+static string GetRuntimeIdentifier()
+{
+    var arch = RuntimeInformation.OSArchitecture switch
+    {
+        Architecture.X64 => "x64",
+        Architecture.Arm64 => "arm64",
+        _ => "x64"
+    };
+
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        return $"osx-{arch}";
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        return $"linux-{arch}";
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        return $"win-{arch}";
+
+    return $"linux-{arch}";
+}
+
+static string GetNuGetCacheDirectory()
+{
+    // Check NUGET_PACKAGES environment variable first
+    var nugetPackages = Environment.GetEnvironmentVariable("NUGET_PACKAGES");
+    if (!string.IsNullOrEmpty(nugetPackages) && Directory.Exists(nugetPackages))
+        return nugetPackages;
+
+    // Default locations
+    var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+    return Path.Combine(home, ".nuget", "packages");
+}
 
 // postgresql
 var postgresPassword = builder.AddParameter("postgres-password", secret: true);

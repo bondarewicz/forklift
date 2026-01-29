@@ -19,6 +19,7 @@ Lifts all your dev services (based on [aspire.dev](https://aspire.dev/))
 
 - .NET 10 SDK
 - Docker Desktop
+- Aspire workload: `dotnet workload install aspire`
 
 ### Install as .NET Tool
 

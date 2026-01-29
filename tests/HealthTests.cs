@@ -9,7 +9,7 @@ namespace Forklift.Tests;
 public class HealthTests
 {
     [Fact]
-    public async Task AllServicesStartAndBecomeHealthy()
+    public async Task UpAndRunning()
     {
         var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.Forklift>();
 
