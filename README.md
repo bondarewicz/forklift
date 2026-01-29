@@ -19,7 +19,36 @@ Lifts all your dev services (based on [aspire.dev](https://aspire.dev/))
 
 - .NET 10 SDK
 - Docker Desktop
-- Aspire workload: `dotnet workload install aspire`
+- Aspire orchestration packages (see below)
+
+### Install Aspire Packages
+
+Forklift requires Aspire orchestration packages in your NuGet cache. Run these commands once:
+
+```bash
+cd /tmp
+mkdir aspire-setup && cd aspire-setup
+dotnet new console
+
+# For macOS ARM (M1/M2/M3)
+dotnet add package Aspire.Hosting.Orchestration.osx-arm64 --version 13.1.0
+dotnet add package Aspire.Dashboard.Sdk.osx-arm64 --version 13.1.0
+
+# For macOS Intel
+# dotnet add package Aspire.Hosting.Orchestration.osx-x64 --version 13.1.0
+# dotnet add package Aspire.Dashboard.Sdk.osx-x64 --version 13.1.0
+
+# For Linux x64
+# dotnet add package Aspire.Hosting.Orchestration.linux-x64 --version 13.1.0
+# dotnet add package Aspire.Dashboard.Sdk.linux-x64 --version 13.1.0
+
+# For Windows x64
+# dotnet add package Aspire.Hosting.Orchestration.win-x64 --version 13.1.0
+# dotnet add package Aspire.Dashboard.Sdk.win-x64 --version 13.1.0
+
+cd ~
+rm -rf /tmp/aspire-setup
+```
 
 ### Install as .NET Tool
 
