@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Aspire.AppHost.Sdk/13.1.0">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
@@ -28,31 +28,6 @@
     <PackageReference Include="Aspire.Hosting.Redis" Version="*" />
   </ItemGroup>
 
-  <!-- DCP and Dashboard packages for local development and testing (RID-specific) -->
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'Arm64'">
-    <PackageReference Include="Aspire.Hosting.Orchestration.osx-arm64" Version="*" />
-    <PackageReference Include="Aspire.Dashboard.Sdk.osx-arm64" Version="*" />
-  </ItemGroup>
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64'">
-    <PackageReference Include="Aspire.Hosting.Orchestration.osx-x64" Version="*" />
-    <PackageReference Include="Aspire.Dashboard.Sdk.osx-x64" Version="*" />
-  </ItemGroup>
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64'">
-    <PackageReference Include="Aspire.Hosting.Orchestration.linux-x64" Version="*" />
-    <PackageReference Include="Aspire.Dashboard.Sdk.linux-x64" Version="*" />
-  </ItemGroup>
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'Arm64'">
-    <PackageReference Include="Aspire.Hosting.Orchestration.linux-arm64" Version="*" />
-    <PackageReference Include="Aspire.Dashboard.Sdk.linux-arm64" Version="*" />
-  </ItemGroup>
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64'">
-    <PackageReference Include="Aspire.Hosting.Orchestration.win-x64" Version="*" />
-    <PackageReference Include="Aspire.Dashboard.Sdk.win-x64" Version="*" />
-  </ItemGroup>
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'Arm64'">
-    <PackageReference Include="Aspire.Hosting.Orchestration.win-arm64" Version="*" />
-    <PackageReference Include="Aspire.Dashboard.Sdk.win-arm64" Version="*" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" />
