@@ -1,0 +1,34 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.1.0">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>81a445ab-0514-40e5-85c2-f0e9214788dc</UserSecretsId>
+
+    <!-- NuGet Tool Packaging -->
+    <IsPackable>true</IsPackable>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>forklift</ToolCommandName>
+    <PackageId>Forklift</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>bondarewicz</Authors>
+    <Description>Lifts all your dev services - .NET Aspire orchestrator for development services</Description>
+    <PackageProjectUrl>https://github.com/bondarewicz/forklift</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/bondarewicz/forklift</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="*" />
+    <PackageReference Include="Aspire.Hosting.MongoDB" Version="*" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

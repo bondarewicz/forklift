@@ -1,0 +1,21 @@
+# IDE
+.idea/
+.vs/
+*.user
+*.suo
+
+# Build
+bin/
+obj/
+nupkg/
+
+# .NET
+*.nupkg
+*.snupkg
+
+# User secrets
+appsettings.*.local.json
+
+# OS
+.DS_Store
+Thumbs.db

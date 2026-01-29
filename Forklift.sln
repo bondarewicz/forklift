@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.0.0
+MinimumVisualStudioVersion = 17.8.0.0
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forklift", "src\Forklift.csproj", "{009628FC-5392-47CB-97F4-DD700E8CE6B1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{009628FC-5392-47CB-97F4-DD700E8CE6B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{009628FC-5392-47CB-97F4-DD700E8CE6B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{009628FC-5392-47CB-97F4-DD700E8CE6B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{009628FC-5392-47CB-97F4-DD700E8CE6B1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74DD085E-9DB2-47BC-B61A-17DBB9E8F17F}
+	EndGlobalSection
+EndGlobal
