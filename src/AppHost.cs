@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 // FORKLIFT -  Lifts all your dev services.
 // =============================================================================
 
+// Allow unsecured transport by default for local development
+Environment.SetEnvironmentVariable("ASPIRE_ALLOW_UNSECURED_TRANSPORT", "true");
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 // postgresql
