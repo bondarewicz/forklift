@@ -61,7 +61,7 @@ The Aspire Dashboard will open automatically showing all services status, logs, 
 
 ## Configuration
 
-All configuration is externalized to `appsettings.Development.json`. No hardcoded values in code.
+All configuration is externalized to `appsettings.json`. No hardcoded values in code.
 
 ### Container Images
 

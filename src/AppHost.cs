@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 
 // =============================================================================
@@ -7,7 +8,20 @@ using Microsoft.Extensions.Configuration;
 // Allow unsecured transport by default for local development
 Environment.SetEnvironmentVariable("ASPIRE_ALLOW_UNSECURED_TRANSPORT", "true");
 
+// Set default dashboard URLs if not already set (for dotnet tool support)
+Environment.SetEnvironmentVariable("ASPNETCORE_URLS",
+    Environment.GetEnvironmentVariable("ASPNETCORE_URLS") ?? "http://localhost:15888");
+Environment.SetEnvironmentVariable("ASPIRE_DASHBOARD_OTLP_HTTP_ENDPOINT_URL",
+    Environment.GetEnvironmentVariable("ASPIRE_DASHBOARD_OTLP_HTTP_ENDPOINT_URL") ?? "http://localhost:18889");
+
+// Get the directory where the executable is located (for dotnet tool support)
+var exeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+var appSettingsPath = Path.Combine(exeDir, "appsettings.json");
+
 var builder = DistributedApplication.CreateBuilder(args);
+
+// Load configuration from the tool's installation directory
+builder.Configuration.AddJsonFile(appSettingsPath, optional: false, reloadOnChange: false);
 
 // postgresql
 var postgresPassword = builder.AddParameter("postgres-password", secret: true);
