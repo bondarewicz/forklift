@@ -155,3 +155,44 @@ When running, access the service UIs at:
 | Unleash | http://localhost:4242 |
 
 Note: Ports may vary. Check the Aspire Dashboard for actual endpoints.
+
+## Development
+
+### Conventional Commits
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/) for semantic versioning:
+
+```bash
+feat: add new service      # → minor bump (0.1.0)
+fix: resolve connection    # → patch bump (0.0.1)
+feat!: redesign config     # → major bump (1.0.0)
+docs: update readme        # → no version bump
+chore: update deps         # → no version bump
+```
+
+### Running Tests
+
+```bash
+dotnet test
+```
+
+### Running GitHub Actions Locally
+
+Install [act](https://github.com/nektos/act):
+
+```bash
+brew install act
+```
+
+Run workflows:
+
+```bash
+# Run CI (pull request) workflow
+act pull_request
+
+# Run publish workflow
+act push
+
+# List available workflows
+act -l
+```

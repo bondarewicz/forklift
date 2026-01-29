@@ -1,5 +1,4 @@
 <Project Sdk="Aspire.AppHost.Sdk/13.1.0">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
@@ -12,9 +11,8 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>forklift</ToolCommandName>
     <PackageId>Forklift</PackageId>
-    <Version>0.0.1</Version>
     <Authors>bondarewicz</Authors>
-    <Description>Lifts all your dev services - .NET Aspire orchestrator for development services</Description>
+    <Description>Lifts all your dev services</Description>
     <PackageProjectUrl>https://github.com/bondarewicz/forklift</PackageProjectUrl>
     <RepositoryUrl>https://github.com/bondarewicz/forklift</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -30,5 +28,4 @@
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
-
 </Project>

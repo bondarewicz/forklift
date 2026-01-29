@@ -9,11 +9,8 @@ env:
   DOTNET_VERSION: '10.0.x'
 
 jobs:
-  publish:
+  build-and-test:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - uses: actions/checkout@v4
@@ -25,22 +22,52 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Generate version
-        id: version
-        run: |
-          COMMIT_COUNT=$(git rev-list --count HEAD)
-          VERSION="0.0.${COMMIT_COUNT}"
-          echo "version=${VERSION}" >> $GITHUB_OUTPUT
-          echo "Generated version: ${VERSION}"
-
       - name: Restore
         run: dotnet restore
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
+      - name: Run integration tests
+        run: dotnet test tests/Forklift.Tests.csproj --configuration Release --no-build --logger "console;verbosity=detailed"
+
+  publish:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v3
+        with:
+          versionSpec: '6.x'
+
+      - name: Determine version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v3
+
+      - name: Display version
+        run: echo "Version ${{ steps.gitversion.outputs.semVer }}"
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore /p:Version=${{ steps.gitversion.outputs.semVer }}
+
       - name: Pack
-        run: dotnet pack src/Forklift.csproj --configuration Release --no-build --output ./nupkg /p:Version=${{ steps.version.outputs.version }}
+        run: dotnet pack src/Forklift.csproj --configuration Release --no-build --output ./nupkg
 
       - name: Push to GitHub Packages
         run: dotnet nuget push ./nupkg/*.nupkg --source "https://nuget.pkg.github.com/bondarewicz/index.json" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
